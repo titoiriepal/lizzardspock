@@ -190,7 +190,7 @@ def automatic():
     numGames = numberGames()
     if numGames is None:
         return
-    if numGames > 300000:
+    if numGames > 500000:
         print(MESSENGES["waiting"])
         #  Imprimira un 'Espere, por favor...' siempre que se juegue por encima
         #  de 300000 partidas, pues la CPU tardará cierto tiempo en hacerlo
