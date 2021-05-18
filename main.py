@@ -52,6 +52,7 @@ def userChoice():
         option = input(MESSENGES["msg"])
         option = option.upper()
         if option == 'Q':
+            calculateTime()
             allPlayers[player] = playerScore
             loadsavefiles.saveFile(allPlayers, FILE)
             exit()
@@ -221,6 +222,7 @@ def principal(allPlayers, playerScore, player):
         # la oportunidad de salir en mitad del juego manual
         if contin.upper() != 'S':
             if SAVE_ON_EXIT is True:
+                calculateTime()
                 allPlayers[player] = playerScore
                 loadsavefiles.saveFile(allPlayers, FILE)
             cleanScreen()
@@ -228,6 +230,13 @@ def principal(allPlayers, playerScore, player):
         cleanScreen()
 
 
+def calculateTime():
+    elapsedTime = time.time()-startTime
+    print(f' Tiempo de programa: {elapsedTime}')
+    time.sleep(2)
+
+
+startTime = time.time()
 cleanScreen()
 MESSENGES = lenguageSelection()
 #  Elegimos el idioma que queremos. En nuestro caso entre Inglés o Español,
