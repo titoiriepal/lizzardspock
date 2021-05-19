@@ -21,7 +21,15 @@ EN_MESSENGES = {"msg" : 'Choose an option: \n[R]ock, \n[P]aper, \n[S]cissor, \n[
     "results_a" : '\nYou have  ',
     "victorys" : ' Victorys',
     "defeats" : ' Loses',
-    "draws" : ' Draws'
+    "draws" : ' Draws',
+    "totalimputs" : "Total inputs: ",
+    "totalgoods" : "Goods inputs: ",
+    "totalbads" : "Bads inputs: ",
+    "sesionimputs" : "session inputs: ",
+    "sesiongoods" : "Session goods inputs: ",
+    "sesionbads" : "Session bads inputs: ",
+    "totaltime" : "Total program execution time: ",
+    "sesiontime" : "Time of this session: "
     }
 
 

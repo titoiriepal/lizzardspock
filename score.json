@@ -1,13 +1,13 @@
 {
     "TITO": {
-        "victorys": 409,
-        "defeats": 393,
-        "draws": 199
+        "victorys": 1241,
+        "defeats": 1175,
+        "draws": 589
     },
     "stats": {
-        "totalimputs": 0,
-        "goodsimputs": 0,
-        "usertime": 11.642598867416382
+        "totalimputs": 19,
+        "goodsimputs": 5,
+        "usertime": 134.0780906677246
     },
     "STATS": {
         "victorys": 787,

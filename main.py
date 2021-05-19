@@ -14,7 +14,8 @@ from en_messenges import EN_MESSENGES
 import paints
 import time
 import platform
-import winsound
+if platform.system() == 'Windows':
+    import winsound
 
 SOUNDS = {"load": "Punch.wav", "win": "Aplause.wav", "draw": "Cough.wav", "lose": "Jajaja.wav"}
 victory = ['PR', 'PK', 'RS', 'RL', 'SP', 'SL', 'KS', 'KR', 'LK', 'LP']
@@ -56,15 +57,28 @@ def userChoice(totalImputs, totalGoods):
             totalGoods = totalGoods + 1
             elapsedTime = calculateTime()
             allPlayers[player] = playerScore
-            allPlayers["stats"]["totalimputs"] = totalImputs
-            allPlayers["stats"]["goodsimputs"] = totalGoods
-            allPlayers["stats"]["usertime"] = elapsedTime
+            allPlayers["stats"]["totalimputs"] = allPlayers["stats"]["totalimputs"] + totalImputs
+            allPlayers["stats"]["goodsimputs"] = allPlayers["stats"]["goodsimputs"] + totalGoods
+            allPlayers["stats"]["usertime"] = allPlayers["stats"]["usertime"] + elapsedTime
             loadsavefiles.saveFile(allPlayers, FILE)
-            print(f' Total de entradas: {totalImputs}, total de buenas: {totalGoods}, total de Malas {totalImputs - totalGoods}')
+            printStats(totalImputs, totalGoods, elapsedTime)
             exit()
     totalGoods = totalGoods + 1
     results = (option, totalImputs, totalGoods)
     return results
+
+
+def printStats(totalImputs, totalGoods, elapsedTime):
+    print(f'{MESSENGES["totalimputs"]}{allPlayers["stats"]["totalimputs"]}')
+    print(f'{MESSENGES["totalgoods"]}{allPlayers["stats"]["goodsimputs"]}')
+    print(f'{MESSENGES["totalbads"]}{allPlayers["stats"]["totalimputs"] - allPlayers["stats"]["goodsimputs"]}')
+    print(f'{MESSENGES["sesionimputs"]}{totalImputs}')
+    print(f'{MESSENGES["sesiongoods"]}{totalGoods}')
+    print(f'{MESSENGES["sesionbads"]}{totalImputs - totalGoods}')
+    sessionTime = time.gmtime(elapsedTime)
+    totalTime = time.gmtime(allPlayers["stats"]["usertime"])
+    print(f'{MESSENGES["totaltime"]}{time.strftime("%H:%M:%S", totalTime)}')
+    print(f'{MESSENGES["sesiontime"]}{time.strftime("%H:%M:%S", sessionTime)}')
 
 
 def cpuChoice():
@@ -234,14 +248,13 @@ def principal(allPlayers, playerScore, player, totalImputs, totalGoods):
         # la oportunidad de salir en mitad del juego manual
         if contin.upper() != 'S':
             if SAVE_ON_EXIT is True:
-                elapsedTime= calculateTime()
+                elapsedTime = calculateTime()
                 allPlayers[player] = playerScore
-                allPlayers["stats"]["totalimputs"]=totalImputs
-                allPlayers["stats"]["goodsimputs"]=totalGoods
-                allPlayers["stats"]["usertime"]=elapsedTime
+                allPlayers["stats"]["totalimputs"] = allPlayers["stats"]["totalimputs"] + totalImputs
+                allPlayers["stats"]["goodsimputs"] = allPlayers["stats"]["goodsimputs"] + totalGoods
+                allPlayers["stats"]["usertime"] = allPlayers["stats"]["usertime"] + elapsedTime
                 loadsavefiles.saveFile(allPlayers, FILE)
-                print(f' Total de entradas: {totalImputs}, total de buenas: {totalGoods}, total de Malas {totalImputs - totalGoods}')
-                print(f'')
+                printStats(totalImputs, totalGoods, elapsedTime)
             #  cleanScreen()
             exit()
         cleanScreen()

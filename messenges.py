@@ -22,5 +22,13 @@ SP_MESSENGES = { "msg" : 'Elije una opción: \n[R]Piedra, \n[P]apel, \n[S]Tijera
     "victorys" : ' Victorias',
     "defeats" : ' Derrotas',
     "draws" : ' Empates',
-    "lenguage" : '[1] Español \n[2] English \n'
+    "lenguage" : '[1] Español \n[2] English \n',
+    "totalimputs" : "El total de imputs es: ",
+    "totalgoods" : "El total de imputs buenos es: ",
+    "totalbads" : "El total de imputs malos es: ",
+    "sesionimputs" : "Imputs en la partida: ",
+    "sesiongoods" : "Imputs buenos en la partida: ",
+    "sesionbads" : "Imputs malos en la partida: ",
+    "totaltime" : "Tiempo total de ejecucion del programa: ",
+    "sesiontime" : "Tiempo de esta partida: "
     }
