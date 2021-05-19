@@ -61,7 +61,8 @@ def userChoice(totalImputs, totalGoods):
             print(f' Total de entradas: {totalImputs}, total de buenas: {totalGoods}, total de Malas {totalImputs - totalGoods}')
             exit()
     totalGoods = totalGoods + 1
-    return option
+    results = (option, totalImputs, totalGoods)
+    return results
 
 
 def cpuChoice():
@@ -211,7 +212,7 @@ def automatic():
         loadsavefiles.saveFile(allPlayers, FILE)
 
 
-def principal(allPlayers, playerScore, player):
+def principal(allPlayers, playerScore, player, totalImputs, totalGoods):
     #  función del bucle principal para el juego
     while True:
         autogame = '3'
@@ -219,7 +220,11 @@ def principal(allPlayers, playerScore, player):
             autogame = input(MESSENGES["typegame"])
             #  Aquí elegimos el tipo de juego que queremos, manual o automático
         if autogame == '1':
-            playerMode(userChoice(totalImputs, totalGoods), cpuChoice())
+            results = userChoice(totalImputs, totalGoods)
+            option = results[0]
+            totalImputs = results[1]
+            totalGoods = results[2]
+            playerMode(option, cpuChoice())
         if autogame == '2':
             automatic()
         contin = input(MESSENGES["continue"])
@@ -230,6 +235,8 @@ def principal(allPlayers, playerScore, player):
                 calculateTime()
                 allPlayers[player] = playerScore
                 loadsavefiles.saveFile(allPlayers, FILE)
+                print(f' Total de entradas: {totalImputs}, total de buenas: {totalGoods}, total de Malas {totalImputs - totalGoods}')
+                print(f'')
             cleanScreen()
             exit()
         cleanScreen()
@@ -262,5 +269,7 @@ playerScore = allPlayers[player]
 # con el cual trabajaremos para aumentar la puntuación. Después asignaremos
 # este diccionario como valor a la clave del nombre del jugador del diccionario
 # allPlayers para poder guardar todos los datos
-principal(allPlayers, playerScore, player)
+principal(allPlayers, playerScore, player, totalImputs, totalGoods)
 #  Llamamos a la funcion principal
+
+#time.strftime("%H:%M:%S", time.gmtime(elapsed_time)) para transformar la variable de tiempo en horas, minutos y segundos
