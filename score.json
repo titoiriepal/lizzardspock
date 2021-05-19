@@ -1,0 +1,17 @@
+{
+    "TITO": {
+        "victorys": 409,
+        "defeats": 393,
+        "draws": 199
+    },
+    "stats": {
+        "totalimputs": 0,
+        "goodsimputs": 0,
+        "usertime": 11.642598867416382
+    },
+    "STATS": {
+        "victorys": 787,
+        "defeats": 807,
+        "draws": 406
+    }
+}

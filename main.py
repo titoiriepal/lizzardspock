@@ -20,7 +20,7 @@ SOUNDS = {"load": "Punch.wav", "win": "Aplause.wav", "draw": "Cough.wav", "lose"
 victory = ['PR', 'PK', 'RS', 'RL', 'SP', 'SL', 'KS', 'KR', 'LK', 'LP']
 # La lista de condiciones de victoria del jugador 1 o el usuario
 options = ['R', 'P', 'S', 'L', 'K']
-FILE = "guardadas\score.json"
+FILE = "score.json"
 #  Ruta del fichero donde guardamos la partida
 SAVE_ON_EXIT = True
 SAVE_EACH_CYCLE = False
@@ -28,7 +28,6 @@ AUTOOPTIONS = ['1', '2']
 '''Para elegir el modo en el que juegas, y el idioma. Sirve la misma constante
 porque en ambas solo hay dos opciones. Si añadimos un idioma o otro
 modo de juego debemos crear una nueva constante para controlarlo'''
-
 
 
 def lenguageSelection():
@@ -55,8 +54,11 @@ def userChoice(totalImputs, totalGoods):
         option = option.upper()
         if option == 'Q':
             totalGoods = totalGoods + 1
-            calculateTime()
+            elapsedTime = calculateTime()
             allPlayers[player] = playerScore
+            allPlayers["stats"]["totalimputs"] = totalImputs
+            allPlayers["stats"]["goodsimputs"] = totalGoods
+            allPlayers["stats"]["usertime"] = elapsedTime
             loadsavefiles.saveFile(allPlayers, FILE)
             print(f' Total de entradas: {totalImputs}, total de buenas: {totalGoods}, total de Malas {totalImputs - totalGoods}')
             exit()
@@ -158,7 +160,7 @@ def loadTable(player):
     validate = os.path.isfile(FILE)
     if validate is not True:
         #  Si no existe el fichero, lo creamos
-        modelDict = {player: {"victorys": 0, "defeats": 0, "draws": 0}}
+        modelDict = {player: {"victorys": 0, "defeats": 0, "draws": 0}, "stats": {"totalimputs": 0, "goodsimputs": 0, "usertime": 0}}
         #  creamos un modelo de diccionario para guardarlo como primer jugador,
         # si no existe el fichero
         loadsavefiles.saveFile(modelDict, FILE)
@@ -232,12 +234,15 @@ def principal(allPlayers, playerScore, player, totalImputs, totalGoods):
         # la oportunidad de salir en mitad del juego manual
         if contin.upper() != 'S':
             if SAVE_ON_EXIT is True:
-                calculateTime()
+                elapsedTime= calculateTime()
                 allPlayers[player] = playerScore
+                allPlayers["stats"]["totalimputs"]=totalImputs
+                allPlayers["stats"]["goodsimputs"]=totalGoods
+                allPlayers["stats"]["usertime"]=elapsedTime
                 loadsavefiles.saveFile(allPlayers, FILE)
                 print(f' Total de entradas: {totalImputs}, total de buenas: {totalGoods}, total de Malas {totalImputs - totalGoods}')
                 print(f'')
-            cleanScreen()
+            #  cleanScreen()
             exit()
         cleanScreen()
 
@@ -246,6 +251,7 @@ def calculateTime():
     elapsedTime = time.time()-startTime
     print(f' Tiempo de programa: {elapsedTime}')
     time.sleep(2)
+    return elapsedTime
 
 
 startTime = time.time()
@@ -272,4 +278,4 @@ playerScore = allPlayers[player]
 principal(allPlayers, playerScore, player, totalImputs, totalGoods)
 #  Llamamos a la funcion principal
 
-#time.strftime("%H:%M:%S", time.gmtime(elapsed_time)) para transformar la variable de tiempo en horas, minutos y segundos
+#  time.strftime("%H:%M:%S", time.gmtime(elapsed_time)) para transformar la variable de tiempo en horas, minutos y segundos

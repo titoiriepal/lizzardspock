@@ -18,11 +18,5 @@ def saveFile(data, filePath):
         with open(filePath, 'w') as output:
             json.dump(data, output, indent=4)
     except FileNotFoundError:
-        findBar = filePath.find("\\")
-        directory = filePath[0:findBar]
-        if platform.system() == 'Windows':
-            os.system("md "+directory)
-        elif platform.system() == 'Linux':
-            os.system("mkdir /"+directory)
         with open(filePath, 'w') as output:
             json.dump(data, output, indent=4)
