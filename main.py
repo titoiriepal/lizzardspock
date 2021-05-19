@@ -55,14 +55,8 @@ def userChoice(totalImputs, totalGoods):
         option = option.upper()
         if option == 'Q':
             totalGoods = totalGoods + 1
-            elapsedTime = calculateTime()
-            allPlayers[player] = playerScore
-            allPlayers["stats"]["totalimputs"] = allPlayers["stats"]["totalimputs"] + totalImputs
-            allPlayers["stats"]["goodsimputs"] = allPlayers["stats"]["goodsimputs"] + totalGoods
-            allPlayers["stats"]["usertime"] = allPlayers["stats"]["usertime"] + elapsedTime
-            loadsavefiles.saveFile(allPlayers, FILE)
-            printStats(totalImputs, totalGoods, elapsedTime)
-            exit()
+            programExit(totalImputs, totalGoods)
+        cleanScreen()
     totalGoods = totalGoods + 1
     results = (option, totalImputs, totalGoods)
     return results
@@ -85,7 +79,7 @@ def cpuChoice():
     #  función para la elección de la maquina, tanto en modo manual
     # como para ambas elecciones en modo automático
     option = random.choice(options)
-    if AUTOOPTIONS == 1:
+    '''if AUTOOPTIONS == 1:
         if option == 'R':
             print(MESSENGES["rock"])
         elif option == 'P':
@@ -95,7 +89,7 @@ def cpuChoice():
         elif option == 'L':
             print(MESSENGES["lizard"])
         else:
-            print(MESSENGES["spock"])
+            print(MESSENGES["spock"])'''
     return option
 
 
@@ -159,9 +153,9 @@ def graphicals(userValue, cpuValue, election):
         print(paints.STYLES["R"])
         print(paints.PAINT["R"])
         print(paints.PAINT["R"])
-        time.sleep(2.2)
+        time.sleep(1)
         cleanScreen()
-        time.sleep(0.8)
+        time.sleep(0.3)
     print(paints.STYLES[userValue])
     print(paints.PAINT[userValue])
     print(paints.STYLES[cpuValue])
@@ -247,23 +241,25 @@ def principal(allPlayers, playerScore, player, totalImputs, totalGoods):
         #  El programa nos deja salir después de jugar, y también nos dará
         # la oportunidad de salir en mitad del juego manual
         if contin.upper() != 'S':
-            if SAVE_ON_EXIT is True:
-                elapsedTime = calculateTime()
-                allPlayers[player] = playerScore
-                allPlayers["stats"]["totalimputs"] = allPlayers["stats"]["totalimputs"] + totalImputs
-                allPlayers["stats"]["goodsimputs"] = allPlayers["stats"]["goodsimputs"] + totalGoods
-                allPlayers["stats"]["usertime"] = allPlayers["stats"]["usertime"] + elapsedTime
-                loadsavefiles.saveFile(allPlayers, FILE)
-                printStats(totalImputs, totalGoods, elapsedTime)
-            #  cleanScreen()
-            exit()
+            programExit(totalImputs, totalGoods)
         cleanScreen()
+
+
+def programExit(totalImputs, totalGoods):
+    if SAVE_ON_EXIT is True:
+        elapsedTime = calculateTime()
+        allPlayers[player] = playerScore
+        allPlayers["stats"]["totalimputs"] = allPlayers["stats"]["totalimputs"] + totalImputs
+        allPlayers["stats"]["goodsimputs"] = allPlayers["stats"]["goodsimputs"] + totalGoods
+        allPlayers["stats"]["usertime"] = allPlayers["stats"]["usertime"] + elapsedTime
+        loadsavefiles.saveFile(allPlayers, FILE)
+        printStats(totalImputs, totalGoods, elapsedTime)
+        #  cleanScreen()
+    exit()
 
 
 def calculateTime():
     elapsedTime = time.time()-startTime
-    print(f' Tiempo de programa: {elapsedTime}')
-    time.sleep(2)
     return elapsedTime
 
 
