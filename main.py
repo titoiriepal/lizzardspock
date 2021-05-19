@@ -30,6 +30,7 @@ porque en ambas solo hay dos opciones. Si añadimos un idioma o otro
 modo de juego debemos crear una nueva constante para controlarlo'''
 
 
+
 def lenguageSelection():
     #  funcion para elegir el idioma
     selectLenguage = '3'
@@ -45,17 +46,21 @@ def lenguageSelection():
             return MESSENGES
 
 
-def userChoice():
+def userChoice(totalImputs, totalGoods):
     #  función para que el jugador haga su elección en modo manual
     option = 'j'
     while option not in options:
         option = input(MESSENGES["msg"])
+        totalImputs = totalImputs + 1
         option = option.upper()
         if option == 'Q':
+            totalGoods = totalGoods + 1
             calculateTime()
             allPlayers[player] = playerScore
             loadsavefiles.saveFile(allPlayers, FILE)
+            print(f' Total de entradas: {totalImputs}, total de buenas: {totalGoods}, total de Malas {totalImputs - totalGoods}')
             exit()
+    totalGoods = totalGoods + 1
     return option
 
 
@@ -214,7 +219,7 @@ def principal(allPlayers, playerScore, player):
             autogame = input(MESSENGES["typegame"])
             #  Aquí elegimos el tipo de juego que queremos, manual o automático
         if autogame == '1':
-            playerMode(userChoice(), cpuChoice())
+            playerMode(userChoice(totalImputs, totalGoods), cpuChoice())
         if autogame == '2':
             automatic()
         contin = input(MESSENGES["continue"])
@@ -237,6 +242,8 @@ def calculateTime():
 
 
 startTime = time.time()
+totalImputs = 0
+totalGoods = 0
 cleanScreen()
 MESSENGES = lenguageSelection()
 #  Elegimos el idioma que queremos. En nuestro caso entre Inglés o Español,
