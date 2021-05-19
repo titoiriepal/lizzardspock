@@ -1,4 +1,4 @@
-#  Archivo de mensajes del juego Piedra, Papel y Tijera V3.0Plus(main.py)
+#  Archivo de mensajes del juego Piedra, Papel y Tijera(main.py)
 
 
 SP_MESSENGES = { "msg" : 'Elije una opción: \n[R]Piedra, \n[P]apel, \n[S]Tijeras, \n[L]agarto, \nSpoc[K], \n[Q]uit: ',
