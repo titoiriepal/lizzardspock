@@ -285,4 +285,5 @@ principal(allPlayers, playerScore, player)
 #  Llamamos a la funcion principal
 
 #  time.strftime("%H:%M:%S", time.gmtime(elapsed_time)) para transformar la variable de tiempo 
+#  time.strftime("%H:%M:%S", time.gmtime(elapsed_time)) para transformar la variable de tiempo
 # en horas, minutos y segundos
