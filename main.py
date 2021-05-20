@@ -17,6 +17,7 @@ import platform
 if platform.system() == 'Windows':
     import winsound
 
+sessionStats = {"totalImputs": 0, "totalGoods": 0, "sessionTime": 0}
 SOUNDS = {"load": "Punch.wav", "win": "Aplause.wav", "draw": "Cough.wav", "lose": "Jajaja.wav"}
 victory = ['PR', 'PK', 'RS', 'RL', 'SP', 'SL', 'KS', 'KR', 'LK', 'LP']
 # La lista de condiciones de victoria del jugador 1 o el usuario
@@ -46,30 +47,29 @@ def lenguageSelection():
             return MESSENGES
 
 
-def userChoice(totalImputs, totalGoods):
+def userChoice():
     #  función para que el jugador haga su elección en modo manual
     option = 'j'
     while option not in options:
         option = input(MESSENGES["msg"])
-        totalImputs = totalImputs + 1
+        sessionStats["totalImputs"] += 1
         option = option.upper()
         if option == 'Q':
-            totalGoods = totalGoods + 1
-            programExit(totalImputs, totalGoods)
+            sessionStats["totalGoods"] += 1
+            programExit()
         cleanScreen()
-    totalGoods = totalGoods + 1
-    results = (option, totalImputs, totalGoods)
-    return results
+    sessionStats["totalGoods"] += 1
+    return option
 
 
-def printStats(totalImputs, totalGoods, elapsedTime):
+def printStats():
     print(f'{MESSENGES["totalimputs"]}{allPlayers["stats"]["totalimputs"]}')
     print(f'{MESSENGES["totalgoods"]}{allPlayers["stats"]["goodsimputs"]}')
     print(f'{MESSENGES["totalbads"]}{allPlayers["stats"]["totalimputs"] - allPlayers["stats"]["goodsimputs"]}')
-    print(f'{MESSENGES["sesionimputs"]}{totalImputs}')
-    print(f'{MESSENGES["sesiongoods"]}{totalGoods}')
-    print(f'{MESSENGES["sesionbads"]}{totalImputs - totalGoods}')
-    sessionTime = time.gmtime(elapsedTime)
+    print(f'{MESSENGES["sesionimputs"]}{sessionStats["totalImputs"]}')
+    print(f'{MESSENGES["sesiongoods"]}{sessionStats["totalGoods"]}')
+    print(f'{MESSENGES["sesionbads"]}{sessionStats["totalImputs"] - sessionStats["totalGoods"]}')
+    sessionTime = time.gmtime(sessionStats["sessionTime"])
     totalTime = time.gmtime(allPlayers["stats"]["usertime"])
     print(f'{MESSENGES["totaltime"]}{time.strftime("%H:%M:%S", totalTime)}')
     print(f'{MESSENGES["sesiontime"]}{time.strftime("%H:%M:%S", sessionTime)}')
@@ -178,6 +178,8 @@ def loadTable(player):
         #  Si el jugador elegido no existe en el fichero, lo creamos
         # con la siguiente instrucción, con todos sus valores a 0
         allPlayers[player] = {"victorys": 0, "defeats": 0, "draws": 0}
+    if "stats" not in allPlayers:
+        allPlayers["stats"] = {"totalimputs": 0, "goodsimputs": 0, "usertime": 0}
     print(f'{MESSENGES["welcome"]} {player} ')
     return allPlayers
 
@@ -222,7 +224,7 @@ def automatic():
         loadsavefiles.saveFile(allPlayers, FILE)
 
 
-def principal(allPlayers, playerScore, player, totalImputs, totalGoods):
+def principal(allPlayers, playerScore, player):
     #  función del bucle principal para el juego
     while True:
         autogame = '3'
@@ -230,10 +232,7 @@ def principal(allPlayers, playerScore, player, totalImputs, totalGoods):
             autogame = input(MESSENGES["typegame"])
             #  Aquí elegimos el tipo de juego que queremos, manual o automático
         if autogame == '1':
-            results = userChoice(totalImputs, totalGoods)
-            option = results[0]
-            totalImputs = results[1]
-            totalGoods = results[2]
+            option = userChoice()
             playerMode(option, cpuChoice())
         if autogame == '2':
             automatic()
@@ -241,19 +240,19 @@ def principal(allPlayers, playerScore, player, totalImputs, totalGoods):
         #  El programa nos deja salir después de jugar, y también nos dará
         # la oportunidad de salir en mitad del juego manual
         if contin.upper() != 'S':
-            programExit(totalImputs, totalGoods)
+            programExit()
         cleanScreen()
 
 
-def programExit(totalImputs, totalGoods):
+def programExit():
     if SAVE_ON_EXIT is True:
-        elapsedTime = calculateTime()
+        sessionStats["sessionTime"] = calculateTime()
         allPlayers[player] = playerScore
-        allPlayers["stats"]["totalimputs"] = allPlayers["stats"]["totalimputs"] + totalImputs
-        allPlayers["stats"]["goodsimputs"] = allPlayers["stats"]["goodsimputs"] + totalGoods
-        allPlayers["stats"]["usertime"] = allPlayers["stats"]["usertime"] + elapsedTime
+        allPlayers["stats"]["totalimputs"] = allPlayers["stats"]["totalimputs"] + sessionStats["totalImputs"]
+        allPlayers["stats"]["goodsimputs"] = allPlayers["stats"]["goodsimputs"] + sessionStats["totalGoods"]
+        allPlayers["stats"]["usertime"] = allPlayers["stats"]["usertime"] + sessionStats["sessionTime"]
         loadsavefiles.saveFile(allPlayers, FILE)
-        printStats(totalImputs, totalGoods, elapsedTime)
+        printStats()
         #  cleanScreen()
     exit()
 
@@ -264,8 +263,6 @@ def calculateTime():
 
 
 startTime = time.time()
-totalImputs = 0
-totalGoods = 0
 cleanScreen()
 MESSENGES = lenguageSelection()
 #  Elegimos el idioma que queremos. En nuestro caso entre Inglés o Español,
@@ -284,7 +281,8 @@ playerScore = allPlayers[player]
 # con el cual trabajaremos para aumentar la puntuación. Después asignaremos
 # este diccionario como valor a la clave del nombre del jugador del diccionario
 # allPlayers para poder guardar todos los datos
-principal(allPlayers, playerScore, player, totalImputs, totalGoods)
+principal(allPlayers, playerScore, player)
 #  Llamamos a la funcion principal
 
-#  time.strftime("%H:%M:%S", time.gmtime(elapsed_time)) para transformar la variable de tiempo en horas, minutos y segundos
+#  time.strftime("%H:%M:%S", time.gmtime(elapsed_time)) para transformar la variable de tiempo 
+# en horas, minutos y segundos
